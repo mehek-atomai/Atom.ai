@@ -63,6 +63,10 @@ canvas { display: block; }
   color: #eaf6ff;
 }
 #hudTitle span { color: #7fd7ff; }
+#hudSubtitle {
+  margin-top: 2px; font-size: 0.72rem; letter-spacing: 0.08em;
+  color: #7fd7ff99; font-style: italic;
+}
 #hudHint {
   margin-top: 4px; font-size: 0.75rem; color: #8792bd;
   letter-spacing: 0.02em;
