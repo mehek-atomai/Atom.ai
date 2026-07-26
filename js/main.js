@@ -26,6 +26,12 @@ const PLANET_TEXTURES = {
   neptune: () => bandedTexture({ seed: 77, stops: [[35,70,180],[60,100,210],[25,55,150],[80,120,220]], bandFreq: 6, turbulence: 0.12, spot: { x: 0.62, y: 0.4, r: 0.06, color: [15,30,90] } })
 };
 
+/* ---------------- Real diameters (km), for the "Realistic Scale" toggle ---------------- */
+const REAL_DIAMETER_KM = {
+  sun: 1391000, mercury: 4879, venus: 12104, earth: 12742, mars: 6779,
+  jupiter: 139820, saturn: 116460, uranus: 50724, neptune: 49244
+};
+
 /* ---------------- Scene setup ---------------- */
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 5000);
@@ -438,6 +444,36 @@ resetBtn.addEventListener("click", () => {
   animateCamera(DEFAULT_CAM_POS.clone(), DEFAULT_TARGET.clone());
 });
 
+/* ---------------- Realistic scale toggle ---------------- */
+// Earth is the anchor: its scene radius (1.5) represents its real diameter (12,742 km).
+const KM_PER_SCENE_UNIT = REAL_DIAMETER_KM.earth / OBJECTS.earth.radius;
+function realisticScaleFactor(key, currentRadius) {
+  const realSceneRadius = REAL_DIAMETER_KM[key] / KM_PER_SCENE_UNIT;
+  return realSceneRadius / currentRadius;
+}
+
+let realisticScale = false;
+const scaleTweens = []; // { mesh, from, to, t }
+
+function setRealisticScale(active) {
+  realisticScale = active;
+  scaleBtn.textContent = active ? "🔭 True Scale: ON" : "🔭 Realistic Scale";
+  scaleBtn.classList.toggle("active", active);
+
+  const targets = [{ mesh: sunMesh, key: "sun", radius: sunData.radius }];
+  PLANET_KEYS.forEach((key) => targets.push({ mesh: planetMeshes[key], key, radius: OBJECTS[key].radius }));
+
+  targets.forEach(({ mesh, key, radius }) => {
+    const factor = active ? realisticScaleFactor(key, radius) : 1;
+    const from = mesh.scale.clone();
+    const to = new THREE.Vector3(factor, factor, factor);
+    scaleTweens.push({ mesh, from, to, t: 0 });
+  });
+}
+
+const scaleBtn = document.getElementById("scaleBtn");
+scaleBtn.addEventListener("click", () => setRealisticScale(!realisticScale));
+
 /* ---------------- Intro overlay ---------------- */
 document.getElementById("enterBtn").addEventListener("click", () => {
   document.getElementById("intro").style.display = "none";
@@ -493,6 +529,15 @@ function tick(dt) {
     camera.position.lerpVectors(camAnim.fromPos, camAnim.toPos, ease);
     controls.target.lerpVectors(camAnim.fromTarget, camAnim.toTarget, ease);
     if (t >= 1) camAnim = null;
+  }
+
+  for (let i = scaleTweens.length - 1; i >= 0; i--) {
+    const tw = scaleTweens[i];
+    tw.t += dt / 1.4;
+    const t = Math.min(tw.t, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    tw.mesh.scale.lerpVectors(tw.from, tw.to, ease);
+    if (t >= 1) scaleTweens.splice(i, 1);
   }
 
   controls.update();

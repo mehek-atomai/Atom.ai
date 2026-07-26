@@ -74,7 +74,7 @@ canvas { display: block; }
 #hudControls {
   display: flex; gap: 8px; margin-top: 12px;
 }
-#pauseBtn, #resetBtn {
+#pauseBtn, #resetBtn, #scaleBtn {
   pointer-events: all;
   background: rgba(20, 24, 55, 0.55);
   border: 1px solid #ffffff2a;
@@ -86,8 +86,8 @@ canvas { display: block; }
   backdrop-filter: blur(6px);
   transition: all 0.2s ease;
 }
-#pauseBtn:hover, #resetBtn:hover { border-color: #7fd7ff; background: rgba(127, 215, 255, 0.15); color: #fff; }
-#pauseBtn.active { border-color: #ff9ecf; background: rgba(255, 158, 207, 0.15); color: #fff; }
+#pauseBtn:hover, #resetBtn:hover, #scaleBtn:hover { border-color: #7fd7ff; background: rgba(127, 215, 255, 0.15); color: #fff; }
+#pauseBtn.active, #scaleBtn.active { border-color: #ff9ecf; background: rgba(255, 158, 207, 0.15); color: #fff; }
 
 /* ---------- Object list ---------- */
 #objectList {
