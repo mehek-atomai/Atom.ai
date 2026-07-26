@@ -234,6 +234,14 @@ canvas { display: block; }
 }
 #chatTitle { font-size: 0.95rem; font-weight: 600; color: #eaf6ff; }
 #chatSubtitle { font-size: 0.68rem; color: #8792bd; margin-top: 2px; }
+#chatHeaderActions { display: flex; align-items: center; gap: 12px; }
+#chatClear {
+  background: none; border: 1px solid #ffffff2a; color: #8792bd;
+  font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 5px 10px; border-radius: 12px; cursor: pointer;
+  transition: all 0.2s ease;
+}
+#chatClear:hover { color: #fff; border-color: #ff9ecf; background: rgba(255, 158, 207, 0.12); }
 #chatClose {
   background: none; border: none; color: #a9b0d4;
   font-size: 1.4rem; cursor: pointer; line-height: 1;

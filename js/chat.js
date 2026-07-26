@@ -2,21 +2,30 @@ import { GEMINI_API_KEY, GEMINI_MODEL } from "./config.js";
 
 const SYSTEM_PROMPT = `You are the astronomy assistant embedded in a website called Atom.ai. Answer the user's question about space, astronomy, or the objects in our Solar System clearly and conversationally in 3-5 sentences. If their question isn't related to astronomy or space, gently redirect them to ask something space-related instead of answering it.
 
+Never greet the user or introduce yourself (no "Hello", no "I'm your astronomy assistant") — this is an ongoing conversation, so just answer directly every time, including the very first message.
+
 After your answer, always add a new line that says exactly "RELATED FACTS:" followed by 2-3 short, genuinely interesting (not commonly known) facts related to the topic, each on its own line starting with "- ".`;
 
 const toggle = document.getElementById("chatToggle");
 const panel = document.getElementById("chatPanel");
 const closeBtn = document.getElementById("chatClose");
+const clearBtn = document.getElementById("chatClear");
 const messagesEl = document.getElementById("chatMessages");
 const form = document.getElementById("chatForm");
 const input = document.getElementById("chatInput");
 const sendBtn = document.getElementById("chatSend");
+
+let history = [];
 
 toggle.addEventListener("click", () => {
   panel.classList.toggle("open");
   if (panel.classList.contains("open")) input.focus();
 });
 closeBtn.addEventListener("click", () => panel.classList.remove("open"));
+clearBtn.addEventListener("click", () => {
+  history = [];
+  messagesEl.innerHTML = "";
+});
 
 function addUserMessage(text) {
   const div = document.createElement("div");
@@ -90,11 +99,13 @@ async function askGemini(question) {
     throw new Error("The AI chat isn't set up yet — no API key configured.");
   }
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+  const contents = [...history, { role: "user", parts: [{ text: question }] }];
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: `${SYSTEM_PROMPT}\n\nUser question: ${question}` }] }],
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents,
       generationConfig: { temperature: 0.7, maxOutputTokens: 400 }
     })
   });
@@ -106,6 +117,9 @@ async function askGemini(question) {
   const data = await res.json();
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error("The AI didn't return an answer. Please try again.");
+
+  history.push({ role: "user", parts: [{ text: question }] });
+  history.push({ role: "model", parts: [{ text }] });
   return text;
 }
 
