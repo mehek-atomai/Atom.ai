@@ -46,7 +46,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
 controls.minDistance = 4;
-controls.maxDistance = 1200;
+controls.maxDistance = 3000; // needs headroom for the "Realistic Scale" mode, which stretches orbits far out
 
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -166,6 +166,7 @@ sunMesh.add(new THREE.Mesh(sunGlowGeo, sunGlowMat));
 /* ---------------- Planets ---------------- */
 const planetMeshes = {};
 const orbitPivots = {};
+const orbitRingMeshes = {};
 let india = null;
 
 function makeOrbitRing(radius, color) {
@@ -183,7 +184,9 @@ function makeOrbitRing(radius, color) {
 
 PLANET_KEYS.forEach((key) => {
   const d = OBJECTS[key];
-  scene.add(makeOrbitRing(d.orbitRadius, d.color));
+  const orbitRing = makeOrbitRing(d.orbitRadius, d.color);
+  scene.add(orbitRing);
+  orbitRingMeshes[key] = orbitRing;
 
   const pivot = new THREE.Object3D();
   pivot.rotation.y = Math.random() * Math.PI * 2;
@@ -454,34 +457,64 @@ const resetBtn = document.getElementById("resetBtn");
 resetBtn.addEventListener("click", () => {
   clearFocus();
   infoPanel.classList.remove("open");
-  animateCamera(DEFAULT_CAM_POS.clone(), DEFAULT_TARGET.clone());
+  animateCamera(getFramingCamPos(), DEFAULT_TARGET.clone());
 });
+
+// Returns the sensible default camera position for whatever mode we're currently in —
+// the close-in default view normally, or a pulled-back view while Realistic Scale is on
+// (since the default distance would otherwise sit inside the real-size Sun).
+function getFramingCamPos() {
+  if (!realisticScale) return DEFAULT_CAM_POS.clone();
+  const dir = DEFAULT_CAM_POS.clone().normalize();
+  return dir.multiplyScalar(NEPTUNE_STRETCHED_DIST * 1.15 + REALISTIC_SUN_RADIUS);
+}
 
 /* ---------------- Realistic scale toggle ---------------- */
 // Earth is the anchor: its scene radius (1.5) represents its real diameter (12,742 km).
 const KM_PER_SCENE_UNIT = REAL_DIAMETER_KM.earth / OBJECTS.earth.radius;
-function realisticScaleFactor(key, currentRadius) {
-  const realSceneRadius = REAL_DIAMETER_KM[key] / KM_PER_SCENE_UNIT;
-  return realSceneRadius / currentRadius;
+function realisticSceneRadius(key) {
+  return REAL_DIAMETER_KM[key] / KM_PER_SCENE_UNIT;
 }
 
+// The Sun's real size (~164 scene units) is bigger than every planet's current orbit
+// distance (max 80), so without stretching the orbits outward too, every planet would
+// end up hidden inside the Sun. Stretch orbit distances just enough that Mercury (the
+// innermost) clears the realistic Sun with a comfortable margin.
+const REALISTIC_SUN_RADIUS = realisticSceneRadius("sun");
+const ORBIT_STRETCH = Math.ceil((REALISTIC_SUN_RADIUS * 1.4) / OBJECTS.mercury.orbitRadius);
+const NEPTUNE_STRETCHED_DIST = OBJECTS.neptune.orbitRadius * ORBIT_STRETCH;
+
 let realisticScale = false;
-const scaleTweens = []; // { mesh, from, to, t }
+const tweens = []; // { vec, from, to, t }
+
+function tweenTo(vec, to) {
+  tweens.push({ vec, from: vec.clone(), to: to.clone(), t: 0 });
+}
 
 function setRealisticScale(active) {
   realisticScale = active;
   scaleBtn.textContent = active ? "🔭 True Scale: ON" : "🔭 Realistic Scale";
   scaleBtn.classList.toggle("active", active);
+  clearFocus();
+  infoPanel.classList.remove("open");
 
-  const targets = [{ mesh: sunMesh, key: "sun", radius: sunData.radius }];
-  PLANET_KEYS.forEach((key) => targets.push({ mesh: planetMeshes[key], key, radius: OBJECTS[key].radius }));
+  const bodies = [{ mesh: sunMesh, key: "sun", radius: sunData.radius }];
+  PLANET_KEYS.forEach((key) => bodies.push({ mesh: planetMeshes[key], key, radius: OBJECTS[key].radius }));
 
-  targets.forEach(({ mesh, key, radius }) => {
-    const factor = active ? realisticScaleFactor(key, radius) : 1;
-    const from = mesh.scale.clone();
-    const to = new THREE.Vector3(factor, factor, factor);
-    scaleTweens.push({ mesh, from, to, t: 0 });
+  bodies.forEach(({ mesh, key, radius }) => {
+    const factor = active ? realisticSceneRadius(key) / radius : 1;
+    tweenTo(mesh.scale, new THREE.Vector3(factor, factor, factor));
   });
+
+  PLANET_KEYS.forEach((key) => {
+    const d = OBJECTS[key];
+    const orbitDist = active ? d.orbitRadius * ORBIT_STRETCH : d.orbitRadius;
+    tweenTo(planetMeshes[key].position, new THREE.Vector3(orbitDist, 0, 0));
+    const ringFactor = active ? ORBIT_STRETCH : 1;
+    tweenTo(orbitRingMeshes[key].scale, new THREE.Vector3(ringFactor, ringFactor, ringFactor));
+  });
+
+  animateCamera(getFramingCamPos(), DEFAULT_TARGET.clone());
 }
 
 const scaleBtn = document.getElementById("scaleBtn");
@@ -544,13 +577,13 @@ function tick(dt) {
     if (t >= 1) camAnim = null;
   }
 
-  for (let i = scaleTweens.length - 1; i >= 0; i--) {
-    const tw = scaleTweens[i];
+  for (let i = tweens.length - 1; i >= 0; i--) {
+    const tw = tweens[i];
     tw.t += dt / 1.4;
     const t = Math.min(tw.t, 1);
     const ease = 1 - Math.pow(1 - t, 3);
-    tw.mesh.scale.lerpVectors(tw.from, tw.to, ease);
-    if (t >= 1) scaleTweens.splice(i, 1);
+    tw.vec.lerpVectors(tw.from, tw.to, ease);
+    if (t >= 1) tweens.splice(i, 1);
   }
 
   controls.update();
