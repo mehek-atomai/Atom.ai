@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Atom.ai — Explore the Cosmos</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="intro">
+    <h1>ATOM<span>.ai</span></h1>
+    <p>An interactive journey through our Solar System, the Milky Way, and the black hole at its heart.</p>
+    <button id="enterBtn">Enter the Universe</button>
+  </div>
+
+  <div id="hud">
+    <div id="hudTitle">ATOM<span>.ai</span></div>
+    <div id="hudHint">Drag to rotate · Scroll to zoom · Click an object</div>
+    <div id="hudControls">
+      <button id="pauseBtn">⏸ Pause</button>
+      <button id="resetBtn">⟲ Reset View</button>
+    </div>
+  </div>
+
+  <div id="objectList">
+    <div id="objectListTitle">Jump to</div>
+    <div id="objectButtons"></div>
+  </div>
+
+  <div id="infoPanel">
+    <button id="closePanel">&times;</button>
+    <div id="infoImage"></div>
+    <h2 id="infoName">Name</h2>
+    <div id="infoType">Type</div>
+    <p id="infoDesc">Description</p>
+    <div id="infoStats"></div>
+    <div id="funFactsTitle">Did you know?</div>
+    <ul id="funFacts"></ul>
+  </div>
+
+  <div id="tooltip">
+    <div id="tooltipName">Name</div>
+    <div id="tooltipType">Type</div>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <div>Loading the cosmos...</div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
