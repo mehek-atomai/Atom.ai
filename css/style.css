@@ -126,23 +126,59 @@ canvas { display: block; }
   backdrop-filter: blur(14px);
   border-left: 1px solid #ffffff22;
   z-index: 20;
-  padding: 28px 24px;
   transition: right 0.4s cubic-bezier(.2,.8,.2,1);
   overflow-y: auto;
+  display: flex; flex-direction: column;
 }
 #infoPanel.open { right: 0; }
 #closePanel {
-  position: absolute; top: 16px; right: 18px;
-  background: none; border: none; color: #a9b0d4;
-  font-size: 1.6rem; cursor: pointer; line-height: 1;
+  position: absolute; top: 16px; right: 18px; z-index: 2;
+  background: rgba(0,0,0,0.4); border-radius: 50%;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid #ffffff33; color: #eaf6ff;
+  font-size: 1.4rem; cursor: pointer; line-height: 1;
+  backdrop-filter: blur(4px);
 }
-#closePanel:hover { color: #fff; }
-#infoImage {
-  width: 90px; height: 90px; border-radius: 50%;
-  margin: 10px auto 20px;
-  background-size: cover; background-position: center;
-  box-shadow: 0 0 40px 4px var(--glow, #7fd7ff88);
+#closePanel:hover { color: #fff; border-color: #7fd7ff; }
+
+#infoPhotoWrap {
+  position: relative;
+  width: 100%; height: 190px;
+  flex-shrink: 0;
+  background: #05060f;
+  overflow: hidden;
 }
+#infoPhotoSkeleton {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, #0d0f24 0%, #171b3c 50%, #0d0f24 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+#infoPhoto {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#infoPhoto.loaded { opacity: 1; }
+#infoPhotoWrap.loaded #infoPhotoSkeleton { display: none; }
+#infoPhotoWrap::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, rgba(8,10,28,0.95) 0%, rgba(8,10,28,0.05) 55%, transparent 100%);
+  box-shadow: inset 0 0 60px 10px var(--glow, transparent);
+  pointer-events: none;
+}
+#infoPhotoCredit {
+  position: absolute; left: 14px; bottom: 10px; z-index: 2;
+  font-size: 0.62rem; color: #ffffffb0; letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+#infoBody { padding: 20px 24px 28px; }
 #infoName { font-size: 1.5rem; margin-bottom: 4px; text-align: center; }
 #infoType {
   text-align: center; font-size: 0.75rem; letter-spacing: 0.1em;

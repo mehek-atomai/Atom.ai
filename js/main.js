@@ -340,7 +340,9 @@ const infoName = document.getElementById("infoName");
 const infoType = document.getElementById("infoType");
 const infoDesc = document.getElementById("infoDesc");
 const infoStats = document.getElementById("infoStats");
-const infoImage = document.getElementById("infoImage");
+const infoPhotoWrap = document.getElementById("infoPhotoWrap");
+const infoPhoto = document.getElementById("infoPhoto");
+const infoPhotoCredit = document.getElementById("infoPhotoCredit");
 const closePanel = document.getElementById("closePanel");
 const funFactsEl = document.getElementById("funFacts");
 const funFactsTitle = document.getElementById("funFactsTitle");
@@ -351,8 +353,19 @@ function openInfo(key) {
   infoName.textContent = d.name;
   infoType.textContent = d.type;
   infoDesc.textContent = d.desc;
-  infoImage.style.background = d.color === 0x000000 ? "#000" : `#${d.color.toString(16).padStart(6, "0")}`;
-  infoImage.style.setProperty("--glow", d.glow || "#7fd7ff88");
+  infoPhotoWrap.style.setProperty("--glow", d.glow || "#7fd7ff88");
+  infoPhotoWrap.classList.remove("loaded");
+  infoPhoto.classList.remove("loaded");
+  infoPhotoCredit.textContent = d.photoCredit || "";
+  infoPhoto.onload = () => {
+    infoPhoto.classList.add("loaded");
+    infoPhotoWrap.classList.add("loaded");
+  };
+  infoPhoto.onerror = () => {
+    infoPhotoWrap.classList.add("loaded"); // hide skeleton even if the photo failed to load
+  };
+  infoPhoto.alt = d.name;
+  infoPhoto.src = d.photo || "";
   infoStats.innerHTML = "";
   Object.entries(d.stats || {}).forEach(([k, v]) => {
     const row = document.createElement("div");

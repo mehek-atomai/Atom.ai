@@ -13,6 +13,8 @@ export const OBJECTS = {
     orbitSpeed: 0,
     rotationSpeed: 0.001,
     glow: "#ffcc33",
+    photo: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0171.jpg",
+    photoCredit: "NASA SDO — live image, updates every ~15 min",
     desc: "The Sun is the star at the center of our Solar System, a nearly perfect sphere of hot plasma. Its gravity holds the whole Solar System together, and its light takes about 8 minutes to reach Earth.",
     stats: {
       "Diameter": "1,391,000 km",
@@ -35,6 +37,8 @@ export const OBJECTS = {
     orbitSpeed: 0.048,
     rotationSpeed: 0.004,
     glow: "#9c9c9c",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Mercury_in_color_-_Prockter07-edit1.jpg",
+    photoCredit: "NASA / Johns Hopkins APL / Carnegie Institution",
     desc: "Mercury is the smallest and fastest planet, whizzing around the Sun in just 88 Earth days. It has almost no atmosphere, so temperatures swing wildly between scorching day and freezing night.",
     stats: { "Diameter": "4,879 km", "Day Length": "59 Earth days", "Year Length": "88 Earth days", "Moons": "0" },
     funFacts: [
@@ -52,6 +56,8 @@ export const OBJECTS = {
     orbitSpeed: 0.035,
     rotationSpeed: 0.002,
     glow: "#e8c27a",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg",
+    photoCredit: "NASA / JPL-Caltech",
     desc: "Venus is Earth's 'evil twin' — similar in size, but wrapped in a thick toxic atmosphere that traps heat, making it the hottest planet in the Solar System, even hotter than Mercury.",
     stats: { "Diameter": "12,104 km", "Day Length": "243 Earth days", "Year Length": "225 Earth days", "Moons": "0" },
     funFacts: [
@@ -69,6 +75,8 @@ export const OBJECTS = {
     orbitSpeed: 0.029,
     rotationSpeed: 0.02,
     glow: "#2f7cff",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg",
+    photoCredit: "NASA — Apollo 17 \"Blue Marble\"",
     desc: "Our home. Earth is the only known planet with life, liquid water oceans, and a breathable atmosphere. Everything you have ever known has happened here.",
     stats: { "Diameter": "12,742 km", "Day Length": "24 hours", "Year Length": "365.25 days", "Moons": "1" },
     funFacts: [
@@ -86,6 +94,8 @@ export const OBJECTS = {
     orbitSpeed: 0.024,
     rotationSpeed: 0.018,
     glow: "#dd6b4d",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
+    photoCredit: "ESA / Rosetta OSIRIS team",
     desc: "The Red Planet, named for its rusty iron-oxide surface. Mars has the largest volcano and canyon in the Solar System, and is the main target for future human exploration.",
     stats: { "Diameter": "6,779 km", "Day Length": "24.6 hours", "Year Length": "687 Earth days", "Moons": "2" },
     funFacts: [
@@ -103,6 +113,8 @@ export const OBJECTS = {
     orbitSpeed: 0.013,
     rotationSpeed: 0.04,
     glow: "#d9b382",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg",
+    photoCredit: "NASA / ESA / A. Simon (Goddard) / M.H. Wong (UC Berkeley)",
     desc: "The largest planet in the Solar System, a giant ball of gas with a storm — the Great Red Spot — bigger than Earth that has raged for centuries. Jupiter's gravity acts like a shield, deflecting comets and asteroids.",
     stats: { "Diameter": "139,820 km", "Day Length": "10 hours", "Year Length": "12 Earth years", "Moons": "95" },
     funFacts: [
@@ -121,6 +133,8 @@ export const OBJECTS = {
     rotationSpeed: 0.038,
     hasRing: true,
     glow: "#e8d3a0",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg",
+    photoCredit: "NASA / JPL-Caltech / Space Science Institute",
     desc: "Famous for its spectacular rings made of billions of ice and rock chunks. Saturn is so light that, in theory, it could float in water.",
     stats: { "Diameter": "116,460 km", "Day Length": "10.7 hours", "Year Length": "29 Earth years", "Moons": "146" },
     funFacts: [
@@ -138,6 +152,8 @@ export const OBJECTS = {
     orbitSpeed: 0.0068,
     rotationSpeed: 0.03,
     glow: "#9fe8e8",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg",
+    photoCredit: "NASA / JPL-Caltech — Voyager 2",
     desc: "Uranus is tipped on its side, rolling around the Sun like a ball rather than spinning upright. It's a cold world made of icy water, methane, and ammonia over a small rocky core.",
     stats: { "Diameter": "50,724 km", "Day Length": "17 hours", "Year Length": "84 Earth years", "Moons": "27" },
     funFacts: [
@@ -155,6 +171,8 @@ export const OBJECTS = {
     orbitSpeed: 0.0054,
     rotationSpeed: 0.032,
     glow: "#4361ee",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg",
+    photoCredit: "NASA / JPL-Caltech — Voyager 2",
     desc: "The windiest planet, with storms howling at over 2,000 km/h. Neptune is so far away that it takes sunlight about 4 hours to reach it, compared to 8 minutes for Earth.",
     stats: { "Diameter": "49,244 km", "Day Length": "16 hours", "Year Length": "165 Earth years", "Moons": "16" },
     funFacts: [
@@ -172,6 +190,8 @@ export const OBJECTS = {
     orbitSpeed: 0.3,
     rotationSpeed: 0.01,
     glow: "#cfcfcf",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg",
+    photoCredit: "Gregory H. Revera (CC BY-SA)",
     desc: "Earth's only natural satellite, and the only other world humans have ever walked on. The Moon's gravity causes ocean tides on Earth.",
     stats: { "Diameter": "3,474 km", "Distance from Earth": "384,400 km", "Orbit Period": "27.3 days" },
     funFacts: [
@@ -185,6 +205,8 @@ export const OBJECTS = {
     type: "Location on Earth",
     color: 0xff6b3d,
     glow: "#ff6b3d",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/c/c5/India_BMNG.jpg",
+    photoCredit: "NASA — Blue Marble Next Generation",
     desc: "You're looking at India, on the globe's surface. India has a rich astronomy history — ancient observatories like Jantar Mantar were built centuries ago to track the Sun, Moon, and stars using only stone instruments, no telescopes.",
     stats: {
       "Latitude": "22.0° N",
@@ -203,6 +225,8 @@ export const OBJECTS = {
     type: "Barred Spiral Galaxy",
     color: 0xffffff,
     glow: "#b98bff",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/6/60/ESO_-_Milky_Way.jpg",
+    photoCredit: "ESO (European Southern Observatory)",
     desc: "Our home galaxy, containing 100–400 billion stars — including our Sun. It's shaped like a flattened spiral disc about 100,000 light-years across. From Earth, we see it edge-on as a hazy band of light across the night sky.",
     stats: { "Diameter": "~100,000 light-years", "Stars": "100–400 billion", "Our Solar System's Location": "Orion Arm", "Age": "13.6 billion years" },
     funFacts: [
@@ -216,6 +240,8 @@ export const OBJECTS = {
     type: "Supermassive Black Hole",
     color: 0x000000,
     glow: "#ff8b3d",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/7/72/A_view_of_the_Milky_Way_supermassive_black_hole_Sagittarius_A%2A_in_polarised_light_%28eso2406a%29.jpg",
+    photoCredit: "EHT Collaboration / ESO — real image of Sagittarius A*",
     desc: "The supermassive black hole at the very center of the Milky Way. It's so massive and dense that not even light can escape its gravity. Everything we see — stars, planets, us — orbits around the galactic center where it sits, about 26,000 light-years from Earth.",
     stats: { "Mass": "~4.3 million Suns", "Distance from Earth": "~26,000 light-years", "Event Horizon Diameter": "~24 million km" },
     funFacts: [
