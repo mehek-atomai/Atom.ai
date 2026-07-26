@@ -50,6 +50,25 @@
     <div>Loading the cosmos...</div>
   </div>
 
+  <button id="chatToggle" aria-label="Ask about astronomy">
+    <span id="chatToggleIcon">✦</span>
+  </button>
+
+  <div id="chatPanel">
+    <div id="chatHeader">
+      <div>
+        <div id="chatTitle">Ask about Astronomy</div>
+        <div id="chatSubtitle">Powered by Gemini AI</div>
+      </div>
+      <button id="chatClose">&times;</button>
+    </div>
+    <div id="chatMessages"></div>
+    <form id="chatForm">
+      <input id="chatInput" type="text" placeholder="Ask a question about space..." autocomplete="off" />
+      <button id="chatSend" type="submit">Send</button>
+    </form>
+  </div>
+
   <script type="importmap">
   {
     "imports": {
@@ -59,5 +78,6 @@
   }
   </script>
   <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/chat.js"></script>
 </body>
 </html>
