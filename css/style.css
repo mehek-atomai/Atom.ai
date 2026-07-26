@@ -236,17 +236,38 @@ canvas { display: block; }
 /* ---------- Chat ---------- */
 #chatToggle {
   position: fixed; bottom: 26px; right: 26px; z-index: 25;
-  width: 58px; height: 58px; border-radius: 50%;
-  border: 1px solid #ffffff2a;
-  background: linear-gradient(135deg, #1a2350, #2a1a50);
+  width: 87px; height: 87px; border-radius: 50%;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(135deg, #1a2350, #2a1a50) padding-box,
+    linear-gradient(135deg, #7fd7ff, #b98bff, #ff9ecf) border-box;
   color: #eaf6ff;
-  font-size: 1.4rem;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-  transition: all 0.25s ease;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.45), 0 0 0 0 rgba(127, 215, 255, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: chatTogglePulse 3.2s ease-in-out infinite;
 }
-#chatToggle:hover { box-shadow: 0 0 24px #7fd7ff66; transform: translateY(-2px); border-color: #7fd7ff; }
+#chatToggle:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 30px #7fd7ff77;
+  animation-play-state: paused;
+}
+#chatToggleIcon {
+  font-size: 2.4rem;
+  line-height: 1;
+  background: linear-gradient(135deg, #7fd7ff, #b98bff, #ff9ecf);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(185, 139, 255, 0.5));
+  transition: transform 0.3s ease;
+}
+#chatToggle:hover #chatToggleIcon { transform: rotate(15deg) scale(1.1); }
+@keyframes chatTogglePulse {
+  0%, 100% { box-shadow: 0 4px 28px rgba(0,0,0,0.45), 0 0 0 0 rgba(127, 215, 255, 0.35); }
+  50% { box-shadow: 0 4px 28px rgba(0,0,0,0.45), 0 0 22px 6px rgba(185, 139, 255, 0.35); }
+}
 
 #chatPanel {
   position: fixed; bottom: 26px; right: 26px; z-index: 26;
@@ -362,7 +383,8 @@ canvas { display: block; }
 
 @media (max-width: 640px) {
   #chatPanel { width: calc(100vw - 32px); right: 16px; bottom: 90px; height: 60vh; }
-  #chatToggle { bottom: 16px; right: 16px; }
+  #chatToggle { bottom: 16px; right: 16px; width: 70px; height: 70px; }
+  #chatToggleIcon { font-size: 1.9rem; }
 }
 
 /* ---------- Loading ---------- */
