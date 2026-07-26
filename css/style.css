@@ -129,8 +129,14 @@ canvas { display: block; }
   transition: right 0.4s cubic-bezier(.2,.8,.2,1);
   overflow-y: auto;
   display: flex; flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: #7fd7ff88 transparent;
 }
 #infoPanel.open { right: 0; }
+#infoPanel::-webkit-scrollbar { width: 8px; }
+#infoPanel::-webkit-scrollbar-track { background: transparent; }
+#infoPanel::-webkit-scrollbar-thumb { background: #7fd7ff66; border-radius: 4px; }
+#infoPanel::-webkit-scrollbar-thumb:hover { background: #7fd7ffaa; }
 #closePanel {
   position: absolute; top: 16px; right: 18px; z-index: 2;
   background: rgba(0,0,0,0.4); border-radius: 50%;
@@ -235,7 +241,7 @@ canvas { display: block; }
 
 /* ---------- Chat ---------- */
 #chatToggle {
-  position: fixed; bottom: 26px; right: 26px; z-index: 25;
+  position: fixed; top: 150px; left: 24px; z-index: 25;
   width: 87px; height: 87px; border-radius: 50%;
   border: 1.5px solid transparent;
   background:
@@ -270,9 +276,9 @@ canvas { display: block; }
 }
 
 #chatPanel {
-  position: fixed; bottom: 26px; right: 26px; z-index: 26;
-  width: 540px; height: 720px;
-  max-height: calc(100vh - 52px);
+  position: fixed; top: 150px; left: 24px; z-index: 26;
+  width: 270px; height: 360px;
+  max-height: calc(100vh - 170px);
   background:
     linear-gradient(rgba(8,10,28,0.97), rgba(8,10,28,0.97)) padding-box,
     linear-gradient(135deg, #7fd7ff88, #b98bff88, #ff9ecf88) border-box;
@@ -384,9 +390,9 @@ canvas { display: block; }
 #chatSend:disabled { opacity: 0.5; cursor: not-allowed; }
 
 @media (max-width: 640px) {
-  #chatPanel { width: calc(100vw - 32px); right: 16px; bottom: 90px; height: 60vh; }
-  #chatToggle { bottom: 16px; right: 16px; width: 70px; height: 70px; }
-  #chatToggleIcon { font-size: 1.9rem; }
+  #chatPanel { width: calc(100vw - 32px); left: 16px; top: 190px; height: 50vh; max-height: calc(100vh - 210px); }
+  #chatToggle { top: 190px; left: 16px; width: 60px; height: 60px; }
+  #chatToggleIcon { font-size: 1.7rem; }
 }
 
 /* ---------- Loading ---------- */
