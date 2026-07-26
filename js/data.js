@@ -294,6 +294,81 @@ export const OBJECTS = {
       "Its name comes from an old astronomical cataloging system for 'novae' — for decades astronomers thought it might be an exploding star before X-ray data revealed a black hole feeding in the system.",
       "V404 Cygni erupts unpredictably roughly once every few decades, so professional and amateur astronomers keep a long-term watch on it in case it 'wakes up' again."
     ]
+  },
+  crabpulsar: {
+    name: "Crab Pulsar",
+    type: "Pulsar (Rotating Neutron Star)",
+    color: 0x000000,
+    glow: "#9fd7ff",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/2/22/Crab_Nebula_composite_Chandra_25.jpg",
+    photoCredit: "NASA / CXC / SAO — Crab Nebula composite",
+    desc: "The collapsed core of a star that exploded as a supernova in the year 1054 — an event so bright that it was recorded by astronomers in China and the Middle East, visible in daylight for weeks. What's left is a city-sized neutron star spinning 30 times every second, sweeping a beam of radiation across space like a cosmic lighthouse.",
+    stats: { "Diameter": "~28 km", "Rotation Speed": "30 times/second", "Distance from Earth": "~6,500 light-years", "Formed": "Supernova of 1054 CE" },
+    funFacts: [
+      "A teaspoon of neutron star material would weigh about as much as a mountain here on Earth — that's how densely packed the Crab Pulsar's matter is.",
+      "The Crab Pulsar's 1054 supernova was recorded by Chinese astronomers as a 'guest star' bright enough to see in daylight for 23 days — one of the oldest precisely dated astronomical events in history.",
+      "It's slowing down very slightly every day as it radiates energy away, and in about 1,200 years it will have lost enough spin to stop pulsing as dramatically as it does now."
+    ]
+  },
+  psrb1919: {
+    name: "PSR B1919+21",
+    type: "Pulsar (Rotating Neutron Star)",
+    color: 0x000000,
+    glow: "#b98bff",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/6/65/Chart_Showing_Radio_Signal_of_First_Identified_Pulsar.jpg",
+    photoCredit: "Historical chart — first pulsar signal, 1967",
+    desc: "The very first pulsar ever discovered, found in 1967 by astronomy student Jocelyn Bell Burnell. Its radio pulses were so precise and regular that astronomers half-jokingly nicknamed the signal 'LGM-1' — Little Green Men — before realizing it was a completely natural, rapidly spinning neutron star.",
+    stats: { "Rotation Period": "1.337 seconds", "Distance from Earth": "~2,300 light-years", "Discovered": "1967" },
+    funFacts: [
+      "Jocelyn Bell Burnell discovered this pulsar as a PhD student, but the 1974 Nobel Prize for the discovery was awarded only to her supervisors — a decision still debated by scientists today.",
+      "Before astronomers understood pulsars, the signal's mechanical regularity genuinely led the discovery team to briefly consider an artificial, intelligent origin — hence 'Little Green Men'.",
+      "PSR B1919+21's radio pulse pattern later became famous outside astronomy entirely — it's the wave pattern printed on the cover of Joy Division's 1979 album 'Unknown Pleasures'."
+    ]
+  },
+  quasar3c273: {
+    name: "3C 273",
+    type: "Quasar (Active Galactic Nucleus)",
+    color: 0x000000,
+    glow: "#ffe38f",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Best_image_of_bright_quasar_3C_273_%2810953173335%29.jpg",
+    photoCredit: "NASA / ESA Hubble Space Telescope",
+    desc: "The first quasar ever identified, and still the brightest one visible from Earth. At its heart sits a supermassive black hole devouring gas so violently that the whole system outshines its entire host galaxy of hundreds of billions of stars — despite being billions of light-years away.",
+    stats: { "Distance from Earth": "~2.4 billion light-years", "Luminosity": "~4 trillion Suns", "Discovered": "1963" },
+    funFacts: [
+      "3C 273 is so far away that its light has taken about 2.4 billion years to reach us — we are seeing it as it looked before complex life existed on Earth.",
+      "It was the first quasar whose puzzling spectrum was decoded, in 1963, revealing it was racing away from us at enormous speed — proof it was billions of light-years distant, far beyond any star in our galaxy.",
+      "Despite its mind-bending distance, 3C 273 is bright enough that amateur astronomers with a decent backyard telescope can actually spot it."
+    ]
+  },
+  magnetarSGR: {
+    name: "SGR 1806-20",
+    type: "Magnetar (Neutron Star)",
+    color: 0x000000,
+    glow: "#ff9ecf",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Magnetar_%28artist%E2%80%99s_impression%29_%28heic2504a%29.jpg",
+    photoCredit: "ESA / Hubble — artist's impression",
+    desc: "A magnetar: a neutron star with the single most powerful magnetic field ever measured in the universe, roughly a quadrillion times stronger than Earth's. In 2004, it unleashed the brightest burst of radiation ever recorded from beyond our Solar System, briefly disturbing Earth's upper atmosphere from 50,000 light-years away.",
+    stats: { "Magnetic Field": "~1 quadrillion times Earth's", "Distance from Earth": "~50,000 light-years", "Major Flare": "December 27, 2004" },
+    funFacts: [
+      "The December 2004 flare from SGR 1806-20 released more energy in a fraction of a second than the Sun produces in about 150,000 years.",
+      "That flare was so powerful it briefly ionized Earth's upper atmosphere and even affected satellites — from a source 50,000 light-years away.",
+      "A magnetar's magnetic field is so strong it would theoretically be lethal from thousands of kilometers away, distorting atoms in any nearby matter beyond recognition."
+    ]
+  },
+  whitehole: {
+    name: "White Hole",
+    type: "Hypothetical Object — Never Observed",
+    color: 0x000000,
+    glow: "#eaf6ff",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/6/61/White_hole_artistic_recreation-bpk.jpg",
+    photoCredit: "Baperookamo / Wikimedia Commons (CC BY-SA) — conceptual illustration, not a real photo",
+    desc: "A white hole is the mathematical mirror image of a black hole: instead of matter and light being unable to escape, nothing would ever be able to fall in — only flow out. It emerges naturally from the equations of general relativity, but no white hole has ever been observed, and most physicists suspect they can't actually exist in nature.",
+    stats: { "Status": "Purely theoretical", "Observed": "Never", "First Proposed": "1960s (general relativity solutions)" },
+    funFacts: [
+      "A white hole is technically a valid solution to Einstein's equations of general relativity — the math doesn't forbid it, but that doesn't mean nature builds one.",
+      "Some physicists have speculated the Big Bang itself might be describable as a kind of white-hole-like event — everything flowing outward from a single point, never able to fall back in.",
+      "One theoretical problem with white holes is that they'd be fundamentally unstable — the slightest bit of infalling matter, even a single photon, is predicted to instantly collapse the white hole into an ordinary black hole."
+    ]
   }
 };
 

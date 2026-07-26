@@ -164,6 +164,135 @@ BLACK_HOLE_CONFIGS.forEach((cfg) => {
   blackHoles[cfg.key] = bh;
 });
 
+/* ---------------- Deep sky objects: pulsars, quasar, magnetar, white hole ---------------- */
+function makePulsar({ key, position, beamColor, tilt }) {
+  const group = new THREE.Group();
+  group.position.set(...position);
+
+  const core = new THREE.Mesh(new THREE.SphereGeometry(1.2, 32, 32), new THREE.MeshBasicMaterial({ color: 0xeaf6ff }));
+  group.add(core);
+
+  const beamPivot = new THREE.Group();
+  beamPivot.rotation.z = tilt; // tilt the spin axis so the sweep reads visually from any angle
+  group.add(beamPivot);
+
+  [1, -1].forEach((dirSign) => {
+    const cone = new THREE.Mesh(
+      new THREE.ConeGeometry(1.6, 50, 24, 1, true),
+      new THREE.MeshBasicMaterial({ color: beamColor, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false })
+    );
+    cone.position.y = dirSign * 25;
+    if (dirSign < 0) cone.rotation.x = Math.PI;
+    beamPivot.add(cone);
+  });
+
+  group.add(new THREE.PointLight(beamColor, 2.5, 80));
+  group.userData.clickable = key;
+  group.userData.spinPivot = beamPivot;
+  return group;
+}
+
+function makeQuasar({ key, position }) {
+  const group = new THREE.Group();
+  group.position.set(...position);
+
+  group.add(new THREE.Mesh(new THREE.SphereGeometry(3, 48, 48), new THREE.MeshBasicMaterial({ color: 0xfff6d8 })));
+
+  const disk = new THREE.Mesh(
+    new THREE.RingGeometry(5, 11, 96),
+    new THREE.MeshBasicMaterial({ color: 0xffcf6f, side: THREE.DoubleSide, transparent: true, opacity: 0.85 })
+  );
+  disk.rotation.x = Math.PI / 2.3;
+  group.add(disk);
+
+  const disk2 = new THREE.Mesh(
+    new THREE.RingGeometry(11, 16, 96),
+    new THREE.MeshBasicMaterial({ color: 0xff9a40, side: THREE.DoubleSide, transparent: true, opacity: 0.3 })
+  );
+  disk2.rotation.x = Math.PI / 2.3;
+  group.add(disk2);
+
+  [1, -1].forEach((dirSign) => {
+    const jet = new THREE.Mesh(
+      new THREE.ConeGeometry(1.4, 55, 20, 1, true),
+      new THREE.MeshBasicMaterial({ color: 0x9fd7ff, transparent: true, opacity: 0.25, side: THREE.DoubleSide, depthWrite: false })
+    );
+    jet.position.y = dirSign * 27.5;
+    if (dirSign < 0) jet.rotation.x = Math.PI;
+    group.add(jet);
+  });
+
+  group.add(new THREE.PointLight(0xffdf9f, 5, 400));
+  group.userData.clickable = key;
+  group.userData.spinDisk = disk;
+  group.userData.spinDisk2 = disk2;
+  return group;
+}
+
+function makeMagnetar({ key, position }) {
+  const group = new THREE.Group();
+  group.position.set(...position);
+
+  group.add(new THREE.Mesh(new THREE.SphereGeometry(1.4, 32, 32), new THREE.MeshBasicMaterial({ color: 0xffe0f2 })));
+
+  const glow = new THREE.Mesh(
+    new THREE.SphereGeometry(2.8, 24, 24),
+    new THREE.MeshBasicMaterial({ color: 0xff6fc9, transparent: true, opacity: 0.25 })
+  );
+  group.add(glow);
+
+  for (let i = 0; i < 3; i++) {
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(3 + i * 1.4, 0.05, 8, 64),
+      new THREE.MeshBasicMaterial({ color: 0xff9ecf, transparent: true, opacity: 0.3 - i * 0.07 })
+    );
+    ring.rotation.x = Math.PI / 2 + i * 0.5;
+    ring.rotation.y = i * 0.7;
+    group.add(ring);
+  }
+
+  const light = new THREE.PointLight(0xff6fc9, 3, 150);
+  group.add(light);
+
+  group.userData.clickable = key;
+  group.userData.pulseGlow = glow;
+  group.userData.pulseLight = light;
+  return group;
+}
+
+function makeWhiteHole({ key, position }) {
+  const group = new THREE.Group();
+  group.position.set(...position);
+
+  group.add(new THREE.Mesh(new THREE.SphereGeometry(4, 48, 48), new THREE.MeshBasicMaterial({ color: 0xeaf6ff })));
+
+  const pulseRings = [];
+  for (let i = 0; i < 3; i++) {
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(4.2, 4.8, 64),
+      new THREE.MeshBasicMaterial({ color: 0x9fe0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6 })
+    );
+    ring.rotation.x = Math.PI / 2.3;
+    ring.userData.phase = i / 3;
+    group.add(ring);
+    pulseRings.push(ring);
+  }
+
+  group.add(new THREE.PointLight(0xcfe9ff, 4, 200));
+  group.userData.clickable = key;
+  group.userData.pulseRings = pulseRings;
+  return group;
+}
+
+const deepSkyObjects = {
+  crabpulsar: makePulsar({ key: "crabpulsar", position: [260, -90, 480], beamColor: 0x9fd7ff, tilt: 0.4 }),
+  psrb1919: makePulsar({ key: "psrb1919", position: [-260, 100, -480], beamColor: 0xb98bff, tilt: -0.5 }),
+  quasar3c273: makeQuasar({ key: "quasar3c273", position: [980, -160, 560] }),
+  magnetarSGR: makeMagnetar({ key: "magnetarSGR", position: [-780, -70, 420] }),
+  whitehole: makeWhiteHole({ key: "whitehole", position: [650, 130, -650] })
+};
+Object.values(deepSkyObjects).forEach((obj) => scene.add(obj));
+
 /* ---------------- Sun ---------------- */
 const sunData = OBJECTS.sun;
 const sunGeo = new THREE.SphereGeometry(sunData.radius, 96, 96);
@@ -407,8 +536,9 @@ closePanel.addEventListener("click", () => {
 /* ---------------- Object jump buttons ---------------- */
 const objButtonsEl = document.getElementById("objectButtons");
 const BLACK_HOLE_KEYS = BLACK_HOLE_CONFIGS.map((cfg) => cfg.key);
-const jumpTargets = { sun: sunMesh, milkyway: milkyWay, india, ...blackHoles, ...planetMeshes };
-["sun", ...PLANET_KEYS, "milkyway", ...BLACK_HOLE_KEYS].forEach((key) => {
+const DEEP_SKY_KEYS = Object.keys(deepSkyObjects);
+const jumpTargets = { sun: sunMesh, milkyway: milkyWay, india, ...blackHoles, ...deepSkyObjects, ...planetMeshes };
+["sun", ...PLANET_KEYS, "milkyway", ...BLACK_HOLE_KEYS, ...DEEP_SKY_KEYS].forEach((key) => {
   const btn = document.createElement("button");
   btn.className = "objBtn";
   btn.textContent = OBJECTS[key].name;
@@ -429,7 +559,11 @@ function focusOn(key) {
   obj.getWorldPosition(worldPos);
   // Close, deliberate zoom so the surface detail is actually visible, not just "nearby".
   const bhConfig = BLACK_HOLE_CONFIGS.find((cfg) => cfg.key === key);
-  const dist = key === "sun" ? 22 : key === "milkyway" ? 380 : bhConfig ? bhConfig.diskOuter * 1.6 : key === "india" ? 5 : (OBJECTS[key].radius || 1) * 4 + 2.5;
+  const FOCUS_DIST_OVERRIDES = {
+    sun: 22, milkyway: 380, india: 5,
+    crabpulsar: 20, psrb1919: 20, quasar3c273: 32, magnetarSGR: 14, whitehole: 20
+  };
+  const dist = FOCUS_DIST_OVERRIDES[key] ?? (bhConfig ? bhConfig.diskOuter * 1.6 : (OBJECTS[key].radius || 1) * 4 + 2.5);
   let dir;
   if (key === "india") {
     // Approach along the surface normal from Earth's center, so the globe can't occlude the tiny marker.
@@ -565,12 +699,31 @@ function tick(dt) {
       bh.userData.spinDisk.rotation.z += 0.01;
       bh.userData.spinDisk2.rotation.z -= 0.006;
     });
+
+    [deepSkyObjects.crabpulsar, deepSkyObjects.psrb1919].forEach((pulsar) => {
+      pulsar.userData.spinPivot.rotation.y += 0.9 * dt;
+    });
+    deepSkyObjects.quasar3c273.userData.spinDisk.rotation.z += 0.012;
+    deepSkyObjects.quasar3c273.userData.spinDisk2.rotation.z -= 0.007;
   }
 
   if (india && india.userData.pulseRing) {
     const s = 1 + Math.sin(elapsed * 3) * 0.25;
     india.userData.pulseRing.scale.set(s, s, s);
   }
+
+  const magnetar = deepSkyObjects.magnetarSGR;
+  const magPulse = 1 + Math.sin(elapsed * 4) * 0.3;
+  magnetar.userData.pulseGlow.scale.set(magPulse, magPulse, magPulse);
+  magnetar.userData.pulseLight.intensity = 3 + Math.sin(elapsed * 4) * 1.5;
+
+  // White hole: rings continuously expand outward and fade, visually inverting a black hole's inward pull.
+  deepSkyObjects.whitehole.userData.pulseRings.forEach((ring) => {
+    const t = ((elapsed * 0.3 + ring.userData.phase) % 1);
+    const s = 1 + t * 3.5;
+    ring.scale.set(s, s, s);
+    ring.material.opacity = 0.6 * (1 - t);
+  });
 
   // Keep the camera anchored to whatever's focused so it doesn't drift away as the object orbits.
   if (focusedKey && !camAnim) {
