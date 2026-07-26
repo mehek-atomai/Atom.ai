@@ -115,41 +115,54 @@ function makeMilkyWayBand() {
 const milkyWay = makeMilkyWayBand();
 scene.add(milkyWay);
 
-/* ---------------- Black hole (Sagittarius A*) ---------------- */
-function makeBlackHole() {
+/* ---------------- Black holes (Sagittarius A* + other notable Milky Way black holes) ---------------- */
+function makeBlackHole({ key, position, horizonRadius, diskInner, diskOuter, diskColor1, diskColor2, glowColor }) {
   const group = new THREE.Group();
-  group.position.set(750, 40, -300); // out in the galactic band, distant from the solar system
+  group.position.set(...position);
 
-  const horizonGeo = new THREE.SphereGeometry(6, 48, 48);
+  const horizonGeo = new THREE.SphereGeometry(horizonRadius, 48, 48);
   const horizonMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
   const horizon = new THREE.Mesh(horizonGeo, horizonMat);
   group.add(horizon);
 
   // Glowing accretion disc
-  const diskGeo = new THREE.RingGeometry(8, 22, 96);
+  const diskMid = diskInner + (diskOuter - diskInner) * 0.55;
+  const diskGeo = new THREE.RingGeometry(diskInner, diskMid, 96);
   const diskMat = new THREE.MeshBasicMaterial({
-    color: 0xffa040, side: THREE.DoubleSide, transparent: true, opacity: 0.85
+    color: diskColor1, side: THREE.DoubleSide, transparent: true, opacity: 0.85
   });
   const disk = new THREE.Mesh(diskGeo, diskMat);
   disk.rotation.x = Math.PI / 2.3;
   group.add(disk);
 
-  const diskGeo2 = new THREE.RingGeometry(22, 30, 96);
-  const diskMat2 = new THREE.MeshBasicMaterial({ color: 0xff5030, side: THREE.DoubleSide, transparent: true, opacity: 0.35 });
+  const diskGeo2 = new THREE.RingGeometry(diskMid, diskOuter, 96);
+  const diskMat2 = new THREE.MeshBasicMaterial({ color: diskColor2, side: THREE.DoubleSide, transparent: true, opacity: 0.35 });
   const disk2 = new THREE.Mesh(diskGeo2, diskMat2);
   disk2.rotation.x = Math.PI / 2.3;
   group.add(disk2);
 
-  const glow = new THREE.PointLight(0xff8b3d, 4, 300);
+  const glow = new THREE.PointLight(glowColor, 4, diskOuter * 10);
   group.add(glow);
 
-  group.userData.clickable = "blackhole";
+  group.userData.clickable = key;
   group.userData.spinDisk = disk;
   group.userData.spinDisk2 = disk2;
   return group;
 }
-const blackHole = makeBlackHole();
-scene.add(blackHole);
+
+const BLACK_HOLE_CONFIGS = [
+  { key: "blackhole", position: [750, 40, -300], horizonRadius: 6, diskInner: 8, diskOuter: 30, diskColor1: 0xffa040, diskColor2: 0xff5030, glowColor: 0xff8b3d },
+  { key: "cygnusx1", position: [420, 70, 360], horizonRadius: 2.4, diskInner: 3.2, diskOuter: 9, diskColor1: 0x6fa8ff, diskColor2: 0x3f6fd8, glowColor: 0x8fb8ff },
+  { key: "gaiabh1", position: [-320, -35, 220], horizonRadius: 2, diskInner: 2.7, diskOuter: 7.5, diskColor1: 0xffcf6f, diskColor2: 0xd89a3f, glowColor: 0xffd48f },
+  { key: "v404cygni", position: [-540, 55, -260], horizonRadius: 2.2, diskInner: 3, diskOuter: 8.2, diskColor1: 0xff8fc4, diskColor2: 0xd83f8f, glowColor: 0xff9ecf }
+];
+
+const blackHoles = {};
+BLACK_HOLE_CONFIGS.forEach((cfg) => {
+  const bh = makeBlackHole(cfg);
+  scene.add(bh);
+  blackHoles[cfg.key] = bh;
+});
 
 /* ---------------- Sun ---------------- */
 const sunData = OBJECTS.sun;
@@ -393,8 +406,9 @@ closePanel.addEventListener("click", () => {
 
 /* ---------------- Object jump buttons ---------------- */
 const objButtonsEl = document.getElementById("objectButtons");
-const jumpTargets = { sun: sunMesh, milkyway: milkyWay, blackhole: blackHole, india, ...planetMeshes };
-["sun", ...PLANET_KEYS, "milkyway", "blackhole"].forEach((key) => {
+const BLACK_HOLE_KEYS = BLACK_HOLE_CONFIGS.map((cfg) => cfg.key);
+const jumpTargets = { sun: sunMesh, milkyway: milkyWay, india, ...blackHoles, ...planetMeshes };
+["sun", ...PLANET_KEYS, "milkyway", ...BLACK_HOLE_KEYS].forEach((key) => {
   const btn = document.createElement("button");
   btn.className = "objBtn";
   btn.textContent = OBJECTS[key].name;
@@ -414,7 +428,8 @@ function focusOn(key) {
   const worldPos = new THREE.Vector3();
   obj.getWorldPosition(worldPos);
   // Close, deliberate zoom so the surface detail is actually visible, not just "nearby".
-  const dist = key === "sun" ? 22 : key === "milkyway" ? 380 : key === "blackhole" ? 45 : key === "india" ? 5 : (OBJECTS[key].radius || 1) * 4 + 2.5;
+  const bhConfig = BLACK_HOLE_CONFIGS.find((cfg) => cfg.key === key);
+  const dist = key === "sun" ? 22 : key === "milkyway" ? 380 : bhConfig ? bhConfig.diskOuter * 1.6 : key === "india" ? 5 : (OBJECTS[key].radius || 1) * 4 + 2.5;
   let dir;
   if (key === "india") {
     // Approach along the surface normal from Earth's center, so the globe can't occlude the tiny marker.
@@ -546,8 +561,10 @@ function tick(dt) {
     if (orbitPivots["moon"]) orbitPivots["moon"].rotation.y += OBJECTS.moon.orbitSpeed * dt * 5;
 
     milkyWay.rotation.y += 0.00015;
-    blackHole.userData.spinDisk.rotation.z += 0.01;
-    blackHole.userData.spinDisk2.rotation.z -= 0.006;
+    Object.values(blackHoles).forEach((bh) => {
+      bh.userData.spinDisk.rotation.z += 0.01;
+      bh.userData.spinDisk2.rotation.z -= 0.006;
+    });
   }
 
   if (india && india.userData.pulseRing) {

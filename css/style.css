@@ -271,16 +271,18 @@ canvas { display: block; }
 
 #chatPanel {
   position: fixed; bottom: 26px; right: 26px; z-index: 26;
-  width: 360px; height: 480px;
+  width: 540px; height: 720px;
   max-height: calc(100vh - 52px);
-  background: rgba(8, 10, 28, 0.92);
-  backdrop-filter: blur(16px);
-  border: 1px solid #ffffff22;
-  border-radius: 18px;
+  background:
+    linear-gradient(rgba(8,10,28,0.97), rgba(8,10,28,0.97)) padding-box,
+    linear-gradient(135deg, #7fd7ff88, #b98bff88, #ff9ecf88) border-box;
+  backdrop-filter: blur(18px);
+  border: 1.5px solid transparent;
+  border-radius: 20px;
   display: none;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 14px 60px rgba(0,0,0,0.6), 0 0 44px rgba(127, 215, 255, 0.18);
 }
 #chatPanel.open { display: flex; }
 

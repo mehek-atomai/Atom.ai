@@ -249,6 +249,51 @@ export const OBJECTS = {
       "A star named S2 orbits Sagittarius A* at up to 3% the speed of light, swinging closer to it than Mercury does to the Sun — and its orbit has been used to test Einstein's general relativity, successfully.",
       "Despite its mass, Sagittarius A* is a surprisingly 'quiet' black hole — it's not actively feeding on much matter right now, so it's far dimmer than many supermassive black holes seen in other galaxies."
     ]
+  },
+  cygnusx1: {
+    name: "Cygnus X-1",
+    type: "Stellar-Mass Black Hole",
+    color: 0x000000,
+    glow: "#8fb8ff",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/1/16/Black_Hole_Cygnus_X-1_%28Illustration%29_%284187-Image%29.png",
+    photoCredit: "NASA / CXC / M. Weiss — artist's illustration",
+    desc: "One of the strongest X-ray sources ever detected from Earth, and the first object widely accepted by astronomers as an actual black hole. It's locked in orbit with a massive blue supergiant star, tearing gas from it into a blazing hot disk.",
+    stats: { "Mass": "~21 Suns", "Distance from Earth": "~7,200 light-years", "Companion Star": "Blue supergiant HDE 226868" },
+    funFacts: [
+      "Stephen Hawking famously bet physicist Kip Thorne in 1975 that Cygnus X-1 was NOT a black hole — a private joke hedge against his own life's work. He conceded the bet in 1990.",
+      "Gas falling toward Cygnus X-1 heats up so violently before crossing the event horizon that it glows brightly in X-rays, which is how it was discovered in 1964 despite being invisible in ordinary light.",
+      "Its companion star is losing mass so fast to the black hole that the whole system will dramatically change within a few million years — a blink of an eye on cosmic timescales."
+    ]
+  },
+  gaiabh1: {
+    name: "Gaia BH1",
+    type: "Stellar-Mass Black Hole",
+    color: 0x000000,
+    glow: "#ffd48f",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Artist%27s_impression_of_the_closest_black_hole_to_Earth_and_its_Sun-like_companion_star.jpg",
+    photoCredit: "ESA / Gaia / NOIRLab — artist's impression",
+    desc: "The closest known black hole to Earth, discovered in 2022 using tiny wobbles in its companion star's motion measured by the Gaia spacecraft. Unlike most black holes we detect, this one is 'dormant' — it isn't actively pulling material from its star, so it gives off no X-rays at all.",
+    stats: { "Mass": "~10 Suns", "Distance from Earth": "~1,560 light-years", "Companion Star": "Sun-like star" },
+    funFacts: [
+      "Gaia BH1 was found not by seeing the black hole, but by watching its companion star wobble in a perfect orbit around seemingly nothing.",
+      "It's about 1,500 times closer to Earth than Sagittarius A*, yet it was only discovered in 2022 — proof that dormant black holes are almost invisible unless you know exactly how to look for them.",
+      "If Gaia BH1 replaced our Sun, Earth would orbit safely at roughly the same distance — the danger of black holes is wildly exaggerated by how tiny their event horizons actually are for their mass."
+    ]
+  },
+  v404cygni: {
+    name: "V404 Cygni",
+    type: "Stellar-Mass Black Hole",
+    color: 0x000000,
+    glow: "#ff9ecf",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/7/75/NASA_Missions_Monitor_a_Waking_Black_Hole_%2819115493618%29.jpg",
+    photoCredit: "NASA / Swift — mission illustration",
+    desc: "A black hole that spent 26 years in near-total silence before suddenly erupting in 2015, blasting out X-rays and visible light so fast that astronomers described it as 'flickering' within seconds. It's one of the most-studied examples of a black hole actively feeding on a companion star.",
+    stats: { "Mass": "~9 Suns", "Distance from Earth": "~7,800 light-years", "Last Major Outburst": "June 2015" },
+    funFacts: [
+      "During its 2015 outburst, V404 Cygni brightened and dimmed on timescales of seconds to minutes — some of the fastest variability ever recorded from a black hole.",
+      "Its name comes from an old astronomical cataloging system for 'novae' — for decades astronomers thought it might be an exploding star before X-ray data revealed a black hole feeding in the system.",
+      "V404 Cygni erupts unpredictably roughly once every few decades, so professional and amateur astronomers keep a long-term watch on it in case it 'wakes up' again."
+    ]
   }
 };
 
